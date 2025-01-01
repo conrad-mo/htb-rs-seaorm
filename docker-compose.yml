@@ -1,0 +1,27 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ./run
+    env_file:
+      - .env
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+  db:
+    image: postgres:17
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - db:/var/lib/postgresql/data/
+      # - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
+    env_file:
+      - .env
+    ports:
+      - 5433:5432
+
+volumes:
+  db:
